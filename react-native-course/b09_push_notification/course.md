@@ -1,0 +1,1 @@
+# setup to push notification local
