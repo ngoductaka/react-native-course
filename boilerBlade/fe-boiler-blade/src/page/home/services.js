@@ -1,4 +1,4 @@
-import { apiClient } from '../../helper/api_client';
+import { apiClient } from "../../helper/request/api_client";
 
-export const getAllUser = () => apiClient.get('/application/getuser');
+export const getUser = () => apiClient.get('/application/getuser');
 export const getApplication = () => apiClient.get('/application');

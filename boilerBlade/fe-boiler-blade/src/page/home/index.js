@@ -4,28 +4,31 @@ import { ENDPOINT } from '../../config/end_point';
 import { useDispatch } from 'react-redux';
 import { requestLogout } from '../../app_state/login';
 
-// import * as services from './services';
+import * as services from './services';
 
 const Page = (props) => {
     const dispatch = useDispatch();
+
     const [listApp, setListApp] = useState([]);
     const [listAllApp, setListAllApp] = useState([]);
-    useEffect(() => {
-        // services.getAllUser()
-        //     .then(({ data }) => {
-        //         console.log('dadasd', data)
-        //         setListApp(data)
-        //     })
 
-        // services.getApplication
-        //     .then(({ data }) => {
-        //         console.log('dadasd', data)
-        //         setListAllApp(data)
-        //     })
-    }, [])
-    return <div onClick={() => {
-        dispatch(requestLogout())
-    }}>sadfasdf</div>
+    useEffect(() => {
+        _requestInit()
+    }, []);
+
+    const _requestInit = async () => {
+        services.getUser()
+            .then(({ data }) => {
+                setListApp(data)
+            })
+        services.getApplication()
+            .then(({ data }) => {
+                setListAllApp(data)
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
+    }
 
     return (
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', alignContent: 'flex-start' }}>
