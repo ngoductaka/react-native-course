@@ -3,6 +3,8 @@ import { createBrowserHistory } from 'history';
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../config/storage_key";
 import { ENDPOINT } from "../../config/end_point";
+import store from '../../store';
+import { requestLogout } from "../../app_state/login";
 
 export const history = createBrowserHistory();
 
@@ -38,11 +40,7 @@ request.interceptors.response.use(
       error.response.status === 401 &&
       originalRequest.url === `refresh_token`
     ) {
-      history.push({
-        pathname: "/signin",
-        state: { token_broken: true },
-      });
-      localStorage.clear();
+      store.dispatch(requestLogout())
       return Promise.reject(error);
     }
 

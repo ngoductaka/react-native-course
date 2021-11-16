@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ENDPOINT } from '../../config/end_point';
+import { useDispatch } from 'react-redux';
+import { requestLogout } from '../../app_state/login';
 
 // import * as services from './services';
 
 const Page = (props) => {
+    const dispatch = useDispatch();
     const [listApp, setListApp] = useState([]);
     const [listAllApp, setListAllApp] = useState([]);
     useEffect(() => {
@@ -20,7 +23,9 @@ const Page = (props) => {
         //         setListAllApp(data)
         //     })
     }, [])
-    return <div>sadfasdf</div>
+    return <div onClick={() => {
+        dispatch(requestLogout())
+    }}>sadfasdf</div>
 
     return (
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', alignContent: 'flex-start' }}>

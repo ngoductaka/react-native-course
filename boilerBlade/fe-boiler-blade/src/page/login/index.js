@@ -8,38 +8,21 @@ import { get } from "lodash";
 
 import { images } from "../../helper/static/images";
 import { requestLogin, isLoginSelector } from "../../app_state/login";
-import { ROUTES } from "../../config/router_app";
+import { ROUTES } from "../../config/route";
 
 const { logo, bg } = images;
 
 const SignInPage = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const isLogin = useSelector(isLoginSelector)
 
     const [username, setUsername] = useState('');
     const [pwd, setPwd] = useState('');
 
-    useEffect(() => {
-        if (
-            (get(history, "location.state.token_broken"), false) ||
-            (get(history, "location.state.sign_out"), false)
-        ) {
-            localStorage.clear();
-            // handleClearAllData();
-        } else if (isLogin) {
-            // history.replace('/');
-        }
-    }, []);
-
     const onLogin = async () => {
-        // console.log("on Login values = ", username, pwd);
-        const result = await dispatch(requestLogin({
-            username,
-            password: pwd
-        }));
-        history.push(`/${ROUTES.HOME}`)
-        console.log('result13', result)
+        const body = { username, password: pwd };
+        const result = await dispatch(requestLogin(body));
+        if (result) history.push(`/${ROUTES.HOME}`)
     };
 
     return (
@@ -55,18 +38,6 @@ const SignInPage = (props) => {
                 backgroundSize: 'cover'
             }}
         >
-            {/* <div
-        style={{
-          backgroundColor: '#000000',
-          backgroundImage: 'linear-gradient(147deg, #000000 0%, #04619f 74%)',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          display: 'flex',
-        }}
-      ></div> */}
             <img src={logo} style={{ height: '140px', width: '300px', zIndex: 1, objectFit: 'contain', marginTop: -250, }} />
             <span style={{ zIndex: 3, fontSize: 28, color: '#fff', fontWeight: 'bold', marginTop: 10 }}>PHẦN MỀM GIÁM SÁT SẢN XUẤT THEO CÔNG ĐOẠN</span>
             <span style={{ zIndex: 3, fontSize: 22, color: '#fff', }}>Tracking Manufacturing Progress</span>
@@ -109,18 +80,5 @@ const SignInPage = (props) => {
         </div>
     );
 };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     isLoggedIn: state.app.isLoggedIn,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     requestSignIn: (data) => dispatch(requestSignIn(data)),
-//     handleClearAllData: () => dispatch(handleClearAllData()),
-//   };
-// };
 
 export default SignInPage;

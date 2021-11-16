@@ -1,26 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react'
 import { Skeleton } from 'antd';
+import { Route, Redirect, BrowserRouter as Router, Switch } from 'react-router-dom';
 
+// REDUX
+import { public_route, private_route } from './config/route';
 // STYLES
 import "antd/dist/antd.css";
-import "./index.css"
+import "./styled/index.css"
 // 
-
-import App from './app';
 import reportWebVitals from './reportWebVitals';
-import store from './store';
-
-const persistor = persistStore(store);
+import store, { persistor } from './store';
+import PrivateRoute from './helper/router/private_route';
+import AppLayout from './com/app_layout';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={<Skeleton />} persistor={persistor}>
-        <App />
+        <AppLayout>
+          <Router>
+            <Switch>
+              {public_route.map(route => (
+                <Route key={route.path} exact path={route.path}>
+                  <route.Com />
+                </Route>
+              ))}
+              {private_route.map(route => (
+                <PrivateRoute key={route.path} exact path={route.path}>
+                  <route.Com />
+                </PrivateRoute>
+              ))}
+              <Redirect to="/404" />
+            </Switch>
+          </Router>
+        </AppLayout>
       </PersistGate>
     </Provider>
   </React.StrictMode>,
